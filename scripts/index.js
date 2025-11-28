@@ -1,4 +1,5 @@
 
+
 // ARRAY DEI PRODOTTI
 const defaultProducts = [
   {
@@ -12,7 +13,7 @@ const defaultProducts = [
   {
     _id: "2",
     name: "Vinile 'Noi, Loro e Gli Altri'",
-    description: "Dopo il successo dell’ultimo album NOI, LORO, GLI ALTRI certificato 4X Disco di Platino...",
+    description: "Dopo il successo dell’ultimo album...",
     brand: "MarraMerch",
     imageUrl: "https://shop.universalmusic.it/cdn/shop/files/marracash-noi-loro-gli-altri-deluxe-doppio-vinile-1_9c608295-e96b-4295-97c0-b1dbf0512a74.png?v=1758184394&width=1024",
     price: 40.90
@@ -20,12 +21,12 @@ const defaultProducts = [
   {
     _id: "3",
     name: "Felpa ESPLOSIONE - MARRAGEDDON",
-    description: "Felpa 50% cotone filato open end e 50% poliestere, con cappuccio e tasca a marsupio...",
+    description: "Felpa 50% cotone filato open end e 50% poliestere...",
     brand: "MarraMerch",
     imageUrl: "./assets/marrageddon_2023_web_hoodie_esplosione_01-Photoroom.png",
     price: 60
   },
-  {
+    {
     _id: "4",
     name: "Qualcosa In Cui Credere - La Mia Trilogia",
     description: "Cofanetto esclusivo in tiratura limitata e numerata con album, booklet e contenuti extra.",
@@ -67,23 +68,26 @@ const defaultProducts = [
   }
 ];
 
-//  PRODUTTI AGGIUNTI DAL BACKOFFICE
-
+// Prodotti aggiunti dal backoffice
 const addedProducts = JSON.parse(localStorage.getItem("addedProducts")) || [];
 
+// Unione prodotti
 const products = [...defaultProducts, ...addedProducts];
 
+// Salva tutti i prodotti in localStorage (per la pagina dettagli)
+localStorage.setItem("products", JSON.stringify(products));
 
+// Elementi HTML
 const container = document.getElementById("product-list");
 const message = document.getElementById("message");
 
-
+// Funzione di rendering
 function renderProducts() {
   container.innerHTML = "";
 
   if (products.length === 0) {
     message.classList.remove("d-none");
-    message.textContent = "Ancora nessun prodotto inserito, ci scusiamo per il disagio!";
+    message.textContent = "Nessun prodotto disponibile.";
     return;
   } else {
     message.classList.add("d-none");
@@ -91,20 +95,16 @@ function renderProducts() {
 
   products.forEach(p => {
     container.innerHTML += `
-      <div class="col-md-3 mb-3 ">
-        <div class="card h-100 shadow-sm rounded-4">
+      <div class="col-md-3 mb-3">
+        <div class="card h-100 shadow-sm">
           <img src="${p.imageUrl}" class="card-img-top" alt="${p.name}">
           <div class="card-body d-flex flex-column">
             <h5 class="card-title">${p.name}</h5>
-            <p class="text-secondary mb-1"><strong>Brand:</strong> ${p.brand}</p>
-            <!-- Descrizione limitata a 3 righe -->
-            <p class="card-text small" style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
-              ${p.description}
-            </p>
-            <p class="text-muted fw-bold">${p.price.toFixed(2)} €</p>
-            <div class="mt-auto">
-              <a href="detail.html?id=${p._id}" class="btn btn-primary btn-sm me-2">Dettagli</a>
-            </div>
+            <p class="text-muted">${p.brand}</p>
+            <p class="small">${p.description}</p>
+            <p class="fw-bold">${p.price.toFixed(2)} €</p>
+
+            <a href="detail.html?id=${p._id}" class="btn btn-primary mt-auto">Dettagli</a>
           </div>
         </div>
       </div>
@@ -112,6 +112,4 @@ function renderProducts() {
   });
 }
 
-
 renderProducts();
-
